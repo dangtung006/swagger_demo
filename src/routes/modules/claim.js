@@ -74,7 +74,7 @@ class DeviceRoutes extends BaseRoute {
          *        require : true
          *      - name: id
          *        in: path
-         *        description: The username of the user
+         *        description: The object Id of claim
          *        required: true
          *     responses:
          *      200:

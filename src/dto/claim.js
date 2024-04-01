@@ -1,4 +1,5 @@
 const Joi = require("joi");
+const ObjectID = require("mongoose").Types.ObjectId
 const BaseDTO = require("./base");
 
 class ClaimDTO extends BaseDTO {
@@ -47,7 +48,7 @@ class ClaimDTO extends BaseDTO {
     validateGetDetail() { 
         return Joi.object({
             userId : [Joi.string().required()],
-            id : [Joi.string().required()]
+            id : [Joi.string().regex(/^[0-9a-fA-F]{24}$/, 'object Id').required()]
         }).validate({ 
             id : this.id,  
             userId : this.userId

@@ -4,7 +4,6 @@ const {
     BadRequestError
 } = require("../common/response/index");
 const { makeResponse } = require("../common/util/resp.ultil");
-
 const ClaimService = require("../services/claim");
 const ClaimDTO = require('../dto/claim');
 
@@ -25,7 +24,10 @@ const getList_Claim = async (req, res) => {
 
     return new SuccessResponse({ 
         message : "ok", 
-        metaData : makeResponse(await ClaimService.getClaimList(Claim)) 
+        metaData : makeResponse( await ClaimService.getClaimList({
+            ...Claim,
+            req : req
+        }) ) 
     }).send(res);
 
 }
@@ -34,12 +36,6 @@ const handleCreate_Claim = async (req, res) => {
     const {
         filename : document
     } = req.file;
-
-    console.log({
-        ...req.body,
-        document : document,
-        userId: req.user
-    });
     
     const Claim = new ClaimDTO({
         ...req.body,
@@ -53,10 +49,13 @@ const handleCreate_Claim = async (req, res) => {
             isValidInputs["error"].message
         );
     }
-    
+
     return new CreatedResponse({ 
         message : "ok", 
-        metaData : makeResponse( await ClaimService.handleCreateClaim(Claim)) 
+        metaData : makeResponse(await ClaimService.handleCreateClaim({
+            ...Claim,
+            req : req
+        })) 
     }).send(res);
 }
 
@@ -75,10 +74,13 @@ const getDetail_Claim = async (req, res) => {
             isValidInputs["error"].message
         );
     }
-
-    return new SuccessResponse({ 
+  
+    return new SuccessResponse({
         message : "ok", 
-        metaData : makeResponse(await ClaimService.getClaimById(Claim)) 
+        metaData : makeResponse(await ClaimService.getClaimById({
+            ...Claim,
+            req : req
+        }))
     }).send(res);
 }
 
